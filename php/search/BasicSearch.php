@@ -119,8 +119,8 @@ abstract class BasicSearch {
             $this->params_['sortby'] = $this->sortby_;
         }
 
-        $this->params_['pageindex'] = $this->pageindex_;
-        $this->params_['pagesize'] = $this->pagesize_;
+        $this->params_['page_index'] = $this->pageindex_;
+        $this->params_['page_size'] = $this->pagesize_;
 
         if ($this->callback_ !== null) 
         {
@@ -135,7 +135,7 @@ abstract class BasicSearch {
         $content = '';
         foreach ($this->params_ as $k => &$v) 
         {
-            $val = urlencode($val);
+            $v = urlencode($v);
             $content .= $k . '=' . $v . '&';
         }
         $content = substr($content, 0, strlen($content) - 1);
@@ -144,7 +144,7 @@ abstract class BasicSearch {
         if ($this->method_ === 'GET') { 
             $url .= '?' . $content;
         }
-        
+var_dump($url);        
         $this->request_ = new RequestCore($url);
         $this->request_->set_method($this->method_);
         $this->request_->set_useragent('Baidu_LbsYun_Sdk');

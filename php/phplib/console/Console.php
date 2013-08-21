@@ -43,7 +43,7 @@ class Console {
         {
             $uri = '';
             foreach($fields as $key => $val) {
-                $uri .=  $key . '=' . $val . '&'; 
+                $uri .=  $key . '=' . urlencode($val) . '&'; 
             }
 
             $this->sn_ = md5(urlencode(($url . '?' . rtrim($uri, '&')).$this->sk_));

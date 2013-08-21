@@ -35,9 +35,12 @@ $local = $search->search();
 
 var_dump($local);
 
-$search = new BoundSearch(31925, $console, '116.383801,39.90112', '116.412475,39.916451');
+$search = new BoundSearch(31958, $console, '116.383801,39.90112', '116.412475,39.916451');
 $bound = $search->search();
 
-$search = new DetailSearch(31925, $console, 1234);
+$search = new DetailSearch(31958, $console, 18460245);
+$detail = $search->search();
+
+var_dump($detail);
 /* vim: set expandtab ts=4 sw=4 sts=4 tw=100: */
 ?>

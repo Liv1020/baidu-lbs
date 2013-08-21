@@ -63,11 +63,12 @@ abstract class BasicSearch {
             trigger_error('Set Filter Condition Failed: Parameter Error', E_USER_WARNING);
             return ; 
         }
-        $this->filter_[] = "$field={$small}:{$big}";
+        $this->filter_[] = "$field:{$small},{$big}";
     }
 
     public function setSortBy($field, $order = BasicSearch::ASCEND) {
-        if (!is_string($field) || $order !== BasicSearch::ASCEND || $order !==  BasicSearch::DESCEND) 
+        if (!is_string($field) || 
+                ($order !== BasicSearch::ASCEND && $order !==  BasicSearch::DESCEND))
         {
             trigger_error('Set SortBy Condition Failed: Parameter Error', E_USER_WARNING);
             return ;
@@ -110,7 +111,7 @@ abstract class BasicSearch {
 
         if (!empty($this->filter_)) 
         {
-            $this->params_['fitler'] = implode('|', $this->filter_);
+            $this->params_['filter'] = implode('|', $this->filter_);
         }
 
         if ($this->sortby_ !== null) 

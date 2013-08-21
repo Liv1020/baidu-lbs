@@ -4,8 +4,6 @@
  * 
  **************************************************************************/
  
-require_once dirname(__FILE__) . '/../init.php'; 
- 
 /**
  * @file BasicSearch.php
  * @author wangjild(wangjild@gmail.com)
@@ -21,10 +19,13 @@ require_once YUN_LIB_PATH . '/request/RequestCore.php';
 abstract class BasicSearch {
 
     public function search() {
-        $this->prepare_request();
+        $this->prepareNeedParams();
+        $this->prepareCommonParams();
 
-        $this->request->send_request();
+        return $this->request->send_request();
     }
+
+    abstract protected prepareNeedParams();
 
     public function setQuery($query) {
         $this->query_ = $query;
@@ -71,8 +72,19 @@ abstract class BasicSearch {
         $this->geotable_id_ = intval($id);
     }
 
-    protected function prepare_request() {
-        
+    public function setConsole(Console $console) {
+        if (! $console instanceOf Console) {
+            trigger_error('instance MUST BE Console Class Type');
+        }
+
+        $this->console_ = $console;
+    }
+
+    protected function prepareCommonParams() {
+        if ($this->console === null) {
+            trigger_error('Console Object Must Be Set'); 
+        }
+
         $this->params_['timestamp'] = time();
 
         if (!is_int($this->geotable_id_)) 
@@ -104,6 +116,31 @@ abstract class BasicSearch {
             $this->params_['callback'] = $this->callback_;
         }
 
+        if (Console::SERVER_KEY == $this->console_->getKeyType()) {
+            $this->params_['sn'] = $this->console_->caculateSN($this->url, $this->params_, 
+                $this->method_);
+        }
+
+        $content = '';
+        foreach ($this->params_ as $key => &$val) 
+        {
+            $val = urlencode($val);
+            $content .= $k . '=' . $v . '&';
+        }
+        $content = substr($content, 0, strlen($content) - 1);
+
+        $url = $this->schema . '://' . $this->domain . $this->url;
+        if ($this->method_ === 'GET') { 
+            $url .= '?' . $content;
+        }
+
+        $this->request_ = new RequestCore($url);
+        $this->request_->set_method($this->method_);
+        $this->request_->set_useragent('Baidu_LbsYun_Sdk');
+
+        if ($this->method_ === 'POST') {
+            $this->request->set_body($content);
+        }
     }
         
     private $geotable_id_ = null; 
@@ -122,7 +159,13 @@ abstract class BasicSearch {
 
     private $console_ = null;
 
-    const DOMAIN = 'api.map.baidu.com';
+    private $method_ = 'HTTP_GET';
+
+    private $schema = 'http';
+
+    private $domain = 'api.map.baidu.com';
+
+    private $url = '';
 
     const ASCEND = 1;
     const DESCEND = -1;

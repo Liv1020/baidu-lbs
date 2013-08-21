@@ -16,16 +16,14 @@
 
 class Console {
 
-    public function setServerAK($ak, $sn) {
+    public function setServerAK($ak, $sk) {
         $this->ak_ = $ak;
-        $this->sn_ = $sn;
+        $this->sk_ = $sk;
         $this->keytype_ = Console::SERVER_KEY;
     }
 
     public function setMobileAK($ak, $mcode) {
-        $this->ak_ = $ak;
-        $this->mcode_ = $mcode;
-        $this->keytype_ = Console::MOBILE_KEY;
+        trigger_error('LBS云目前暂不支持Mobile类型的key');
     }
 
     public function setBrowserAK($ak, $referer) {
@@ -42,13 +40,27 @@ class Console {
         return $this->keytype_;
     }
 
-    public function getSN() {
+    public function caculateSN($url, $fields, $method = 'HTTP_GET') {
+        if ($method === 'HTTP_GET') 
+        {
+            $uri = '';
+            foreach($fields as $key => $val) {
+                $uri .=  $key . '=' . $val . '&'; 
+            }
+
+            $this->sn_ = md5(urlencode(($url . '?' . rtrim($uri, '&')).$this->sk_));
+        } else if ($method === 'HTTP_POST') {
+            $uri = '';
+            ksort($fields);
+            foreach($fields as $key => $val) {
+                $uri .=  $key . '=' . urlencode($val);
+            }
+            
+            $this->sn_ = md5(urlencode($url.$uri.$this->sk_));
+        }
         return $this->sn_;
     }
 
-    public function getMCode() {
-        return $this->mcode_;
-    }
 
     public function getReferer() {
         return $this->referer_;
@@ -56,6 +68,8 @@ class Console {
 
     /* api 所必须的key */
     private $ak_;
+    private $sk_;
+
     private $keytype_;
 
     /*签名算法，适用于将ak配置成server类型，并且校验方式为sn*/

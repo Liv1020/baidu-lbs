@@ -1,7 +1,7 @@
 <?php
 /***************************************************************************
- * 
- * 
+ * BSD License 
+ * license: http://opensource.org/licenses/bsd-license.php
  **************************************************************************/
  
 /**
@@ -15,17 +15,24 @@
 require_once YUN_LIB_PATH . '/console/Console.php';
 require_once YUN_LIB_PATH . '/request/RequestCore.php';
 
-
 abstract class BasicSearch {
 
     public function search() {
         $this->prepareNeedParams();
         $this->prepareCommonParams();
 
-        return $this->request->send_request();
+        $this->request_->send_request();
+
+        $response = new ResponseCore($this->request_->get_response_header(), 
+                $this->request_->get_response_body(), $this->request_->get_response_code());
+        if (!$response->isOK()) {
+            return false;
+        }
+
+        return json_decode($response->body, true);
     }
 
-    abstract protected prepareNeedParams();
+    abstract protected function prepareNeedParams();
 
     public function setQuery($query) {
         $this->query_ = $query;
@@ -74,19 +81,22 @@ abstract class BasicSearch {
 
     public function setConsole(Console $console) {
         if (! $console instanceOf Console) {
-            trigger_error('instance MUST BE Console Class Type');
+            trigger_error('instance MUST BE Console Class Type', E_USER_ERROR);
         }
 
         $this->console_ = $console;
     }
 
     protected function prepareCommonParams() {
-        if ($this->console === null) {
-            trigger_error('Console Object Must Be Set'); 
+        if ($this->console_ === null) {
+            trigger_error('Console Object Must Be Set', E_USER_ERROR); 
         }
 
+        $this->params_['ak'] = $this->console_->getAK();
         $this->params_['timestamp'] = time();
 
+        $this->params_['q'] = $this->query_ == null ? '' : $this->query_;
+        
         if (!is_int($this->geotable_id_)) 
         {
             trigger_error('Geotable Id MUST BE set', E_USER_ERROR);
@@ -117,55 +127,62 @@ abstract class BasicSearch {
         }
 
         if (Console::SERVER_KEY == $this->console_->getKeyType()) {
-            $this->params_['sn'] = $this->console_->caculateSN($this->url, $this->params_, 
+            $this->params_['sn'] = $this->console_->caculateSN($this->url_, $this->params_, 
                 $this->method_);
         }
 
         $content = '';
-        foreach ($this->params_ as $key => &$val) 
+        foreach ($this->params_ as $k => &$v) 
         {
             $val = urlencode($val);
             $content .= $k . '=' . $v . '&';
         }
         $content = substr($content, 0, strlen($content) - 1);
 
-        $url = $this->schema . '://' . $this->domain . $this->url;
+        $url = $this->schema_ . '://' . $this->domain_ . $this->url_;
         if ($this->method_ === 'GET') { 
             $url .= '?' . $content;
         }
-
+        
         $this->request_ = new RequestCore($url);
         $this->request_->set_method($this->method_);
         $this->request_->set_useragent('Baidu_LbsYun_Sdk');
 
+        if (Console::BROWSER_KEY == $this->console_->getKeyType()) 
+        {
+            $this->request_->set_referer_url($this->console_->getReferer());
+        }
+        
         if ($this->method_ === 'POST') {
             $this->request->set_body($content);
         }
     }
         
-    private $geotable_id_ = null; 
-    private $sortby_ = null;
-    private $filter_ = array();
-    private $tags_ = array();
+    protected $geotable_id_ = null; 
+    
+    protected $query_ = null;    
+    protected $sortby_ = null;
+    protected $filter_ = array();
+    protected $tags_ = array();
 
-    private $pageindex_ = 0;
-    private $pagesize_ = 10;
+    protected $pageindex_ = 0;
+    protected $pagesize_ = 10;
 
-    private $callback_ = null;
+    protected $callback_ = null;
 
-    private $params_ = array();
+    protected $params_ = array();
 
-    private $request_ = null;
+    protected $request_ = null;
 
-    private $console_ = null;
+    protected $console_ = null;
 
-    private $method_ = 'HTTP_GET';
+    protected $method_ = 'GET';
 
-    private $schema = 'http';
+    protected $schema_ = 'http';
 
-    private $domain = 'api.map.baidu.com';
+    protected $domain_ = 'api.map.baidu.com';
 
-    private $url = '';
+    protected $url_ = '';
 
     const ASCEND = 1;
     const DESCEND = -1;

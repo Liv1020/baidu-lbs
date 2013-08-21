@@ -102,6 +102,11 @@ class RequestCore
     public $useragent = 'RequestCore/1.4.4';
 
     /**
+      * Http Header Referer string to use.
+      */
+    public $referer_url = null;
+
+    /**
      * File to read from while streaming up.
      */
     public $read_file = null;
@@ -331,6 +336,18 @@ class RequestCore
         return $this;
     }
 
+    /**
+     * Sets a custom http referer string for the class.
+     * 
+     * @param string $referer (Required) The http referer string to use.
+     * @return $this A reference to the current instance.
+     */
+    public function set_referer_url($referer) 
+    {
+        $this->referer_url = $referer;
+        return $this;
+    }
+    
     /**
      * Set the body to send in the request.
      *
@@ -630,10 +647,13 @@ class RequestCore
         curl_setopt($curl_handle, CURLOPT_TIMEOUT, 5184000);
         curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 120);
         curl_setopt($curl_handle, CURLOPT_NOSIGNAL, true);
-        curl_setopt($curl_handle, CURLOPT_REFERER, $this->request_url);
         curl_setopt($curl_handle, CURLOPT_USERAGENT, $this->useragent);
         curl_setopt($curl_handle, CURLOPT_READFUNCTION, array($this, 'streaming_read_callback'));
 
+        if (is_string($this->referer_url)) {
+            curl_setopt($curl_handle, CURLOPT_REFERER, $this->referer_url);
+        }
+        
         // Verification of the SSL cert
         if ($this->ssl_verification)
         {

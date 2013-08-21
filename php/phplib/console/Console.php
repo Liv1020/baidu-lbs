@@ -1,10 +1,8 @@
 <?php
 /***************************************************************************
- * 
  * BSD License 
+ * license : http://opensource.org/licenses/bsd-license.php
  **************************************************************************/
- 
- 
  
 /**
  * @file Console.php
@@ -40,8 +38,8 @@ class Console {
         return $this->keytype_;
     }
 
-    public function caculateSN($url, $fields, $method = 'HTTP_GET') {
-        if ($method === 'HTTP_GET') 
+    public function caculateSN($url, $fields, $method = 'GET') {
+        if ($method === 'GET') 
         {
             $uri = '';
             foreach($fields as $key => $val) {
@@ -49,7 +47,7 @@ class Console {
             }
 
             $this->sn_ = md5(urlencode(($url . '?' . rtrim($uri, '&')).$this->sk_));
-        } else if ($method === 'HTTP_POST') {
+        } else if ($method === 'POST') {
             $uri = '';
             ksort($fields);
             foreach($fields as $key => $val) {

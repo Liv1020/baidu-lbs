@@ -1,10 +1,8 @@
 <?php
 /***************************************************************************
- * 
- * 
+ * BSD License 
+ * http://opensource.org/licenses/bsd-license.php
  **************************************************************************/
- 
- 
  
 /**
  * @file NearbySearch.php
@@ -54,7 +52,8 @@ class NearbySearch extends BasicSearch{
         $this->params_['radius'] = $this->radius_;
     }
 
-    private $location_;
+    protected $location_;
+    protected $url_ = '/geosearch/v2/nearby';
 }
 
 

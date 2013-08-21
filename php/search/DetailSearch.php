@@ -21,7 +21,7 @@ class DetailSearch extends BasicSearch{
         $this->setConsole($console);
         $this->setPoiId($poi_id);
 
-//        $this->url_ .= '/' . $this->poi_id_; 
+        $this->url_ .= '/' . $this->poi_id_; 
     }
 
     public function setPoiId($id) {
@@ -33,7 +33,6 @@ class DetailSearch extends BasicSearch{
     } 
 
     protected function prepareNeedParams() {
-        $this->params_['id'] = $this->poi_id_;
     }
 
     protected $poi_id_;

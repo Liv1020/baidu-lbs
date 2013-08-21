@@ -144,7 +144,7 @@ abstract class BasicSearch {
         if ($this->method_ === 'GET') { 
             $url .= '?' . $content;
         }
-var_dump($url);        
+        
         $this->request_ = new RequestCore($url);
         $this->request_->set_method($this->method_);
         $this->request_->set_useragent('Baidu_LbsYun_Sdk');

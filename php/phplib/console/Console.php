@@ -38,25 +38,26 @@ class Console {
         return $this->keytype_;
     }
 
-    public function caculateSN($url, $fields, $method = 'GET') {
-        if ($method === 'GET') 
+    public function caculateSN($url, $querystring_arrays, $method = 'GET') {
+        if ($method === 'POST') 
         {
-            $uri = '';
-            foreach($fields as $key => $val) {
-                $uri .=  $key . '=' . urlencode($val) . '&'; 
-            }
-
-            $this->sn_ = md5(urlencode(($url . '?' . rtrim($uri, '&')).$this->sk_));
-        } else if ($method === 'POST') {
-            $uri = '';
-            ksort($fields);
-            foreach($fields as $key => $val) {
-                $uri .=  $key . '=' . urlencode($val);
-            }
-            
-            $this->sn_ = md5(urlencode($url.$uri.$this->sk_));
+            ksort($querystring_arrays);
         }
+        
+        $querystring = http_build_query($querystring_arrays);
+        $this->sn_ = md5(urlencode($url.'?'.$querystring.$this->sk_));
         return $this->sn_;
+    }
+
+    public function caculateAKSN($ak, $sk, $querystring_arrays, $method = 'GET') 
+    {
+        if ($method === 'POST') 
+        {
+            ksort($querystring_arrays); 
+        }           
+                
+        $querystring = http_build_query($querystring_arrays);
+        return md5(urlencode($url.'?'.$querystring.$this->sk_));
     }
 
 

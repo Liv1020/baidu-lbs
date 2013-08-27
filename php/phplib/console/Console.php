@@ -49,7 +49,7 @@ class Console {
         return $this->sn_;
     }
 
-    public function caculateAKSN($ak, $sk, $querystring_arrays, $method = 'GET') 
+    public static function caculateAKSN($ak, $sk, $url, $querystring_arrays, $method = 'GET') 
     {
         if ($method === 'POST') 
         {
@@ -57,7 +57,7 @@ class Console {
         }           
                 
         $querystring = http_build_query($querystring_arrays);
-        return md5(urlencode($url.'?'.$querystring.$this->sk_));
+        return md5(urlencode($url.'?'.$querystring.$sk));
     }
 
 

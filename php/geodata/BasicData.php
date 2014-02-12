@@ -66,6 +66,7 @@ abstract class BasicData{
         $content = '';
         foreach ($this->params_ as $k => &$v) 
         {
+            if (is_null($v)) continue;
             $v = urlencode($v);
             $content .= $k . '=' . $v . '&';
         }

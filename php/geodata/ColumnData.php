@@ -70,6 +70,7 @@ class ColumnData extends BasicData{
         $this->params_['is_search_field'] = $is_search_field; 
 
         foreach($options as $k=>$v){
+            if (is_null($v)) continue;
             $this->params_[$k] = $v;
         }
     }
@@ -95,6 +96,7 @@ class ColumnData extends BasicData{
         $this->params_['name'] = $name; 
 
         foreach($options as $k=>$v){
+            if (is_null($v)) continue;
             $this->params_[$k] = $v;
         }
     }

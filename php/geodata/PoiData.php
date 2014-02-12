@@ -57,6 +57,7 @@ class PoiData extends BasicData{
         $this->params_['coord_type'] = $coord_type; 
 
         foreach($options as $k=>$v){
+            if (is_null($v)) continue;
             $this->params_[$k] = $v;
         }
     }
@@ -64,6 +65,7 @@ class PoiData extends BasicData{
     protected function _update($id, $options=array()){
         $this->params_['id']    = $id;
         foreach($options as $k=>$v){
+            if (is_null($v)) continue;
             $this->params_[$k] = $v;
         }
     }
@@ -107,6 +109,7 @@ class PoiData extends BasicData{
      */
     protected function _list($options=array()){
         foreach($options as $k=>$v){
+            if (is_null($v)) continue;
             $this->params_[$k] = $v;
         }
     }

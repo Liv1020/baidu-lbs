@@ -15,6 +15,10 @@ use liv\lbs\phplib\console\Console;
  */
 class ColumnData extends BasicData
 {
+    const COLUMN_TYPE_INT = 1;
+    const COLUMN_TYPE_DOUBLE = 2;
+    const COLUMN_TYPE_STRING = 3;
+
     /**
      * @var string
      */

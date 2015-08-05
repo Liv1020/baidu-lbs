@@ -1,24 +1,8 @@
 <?php
-/***************************************************************************
- * BSD License 
- * license : http://opensource.org/licenses/bsd-license.php
- **************************************************************************/
- 
- 
- 
-/**
- * @file test.php
- * @author wangjild(wangjild@gmail.com)
- * @date 2013/08/21 16:06:33
- * @brief 
- *  
- **/
 
-require_once('./phplib/console/Console.php');
-require_once('./search/NearbySearch.php');
-require_once('./search/LocalSearch.php');
-require_once('./search/BoundSearch.php');
-require_once('./search/DetailSearch.php');
+use liv\lbs\phplib\console\Console;
+
+require '../vendor/autoload.php';
 
 $console = new Console();
 $console->setServerAK('4b905df3330121f4382299f18cfc2462', '9E050DAfce0ca5861a01bda20bc8c234');

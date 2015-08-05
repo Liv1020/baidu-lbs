@@ -1,35 +1,18 @@
 <?php
-/***************************************************************************
- * BSD License
- * license : http://opensource.org/licenses/bsd-license.php
- **************************************************************************/
+
 require '../vendor/autoload.php';
 
 use liv\lbs\geodata\ColumnData;
 use liv\lbs\geodata\GeotableData;
 use liv\lbs\geodata\PoiData;
-use liv\lbs\phplib\Console;
-
-
-/**
- * @file test.php
- * @author fengzi(wfwq2008@gmail.com)
- * @date 2013/08/21 16:06:33
- * @brief
- *
- **/
-
-require_once('./phplib/console/Console.php');
-require_once('./geodata/GeotableData.php');
-require_once('./geodata/ColumnData.php');
-require_once('./geodata/PoiData.php');
+use liv\lbs\phplib\console\Console;
 
 
 /*---------- Test Geotable ----------*/
 function test_geotable(Console $console)
 {
     $geotable = new GeotableData($console);
-    $ret = $geotable->create("test01", 1, 1);
+    $ret = $geotable->create("shop", 1, 1);
     $id = $ret["id"];
     var_dump($ret);
 
@@ -50,14 +33,14 @@ function test_geotable(Console $console)
 function test_column(Console $console, $geotable_id)
 {
     $column = new ColumnData($console, $geotable_id);
-    $ret = $column->create("test-01", "field01", 1, 1, 0);
+    $ret = $column->create("test-01", "field01", $column::COLUMN_TYPE_INT, 1, 0);
     var_dump($ret);
     $id = $ret["id"];
 
     $ret = $column->update($id, "test-02");
     var_dump($ret);
     $ret = $column->list("test-01");
-    //var_dump($ret);
+    var_dump($ret);
 
     $ret = $column->detail($id);
     var_dump($ret);
@@ -89,9 +72,10 @@ function test_poi(Console $console, $geotable_id)
 }
 
 $console = new Console();
-$console->setServerAK('4b905df3330121f4382299f18cfc2462', '9E050DAfce0ca5861a01bda20bc8c234');
+$console->setServerAK('KbMeaL3jz0ds1lbG11g3Esys', 'myGUcGyxhZvVOtINr8wrvkbGIxTb9CSG');
 
 
 test_geotable($console);
-//test_column($console, $geotable_id);
-//test_poi($console, $geotable_id);
+$geotable_id = '116200';
+test_column($console, $geotable_id);
+test_poi($console, $geotable_id);

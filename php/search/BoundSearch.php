@@ -1,70 +1,87 @@
 <?php
-/***************************************************************************
- * BSD License 
- * http://opensource.org/licenses/bsd-license.php
- **************************************************************************/
- 
+namespace liv\lbs\search;
+
+use liv\lbs\phplib\console\Console;
+
 /**
- * @file BoundSearch.php
- * @author wangjild(wangjild@gmail.com)
- * @date 2013/08/21 12:31:50
- * @brief 
- *  
- **/
-require_once dirname(__FILE__) . '/../init.php';
-require_once (ROOT_PATH . '/search/BasicSearch.php');
+ * Class BoundSearch
+ * @package liv\lbs\search
+ */
+class BoundSearch extends BasicSearch
+{
 
-class BoundSearch extends BasicSearch{
+    /**
+     * @var
+     */
+    protected $bounds_;
+    /**
+     * @var string
+     */
+    protected $url_ = '/geosearch/v3/bound';
 
-    public function __construct($geotable_id, Console $console, $bottomleft, $upright) {
+    /**
+     * @param $geotable_id
+     * @param Console $console
+     * @param $bottomleft
+     * @param $upright
+     */
+    public function __construct($geotable_id, Console $console, $bottomleft, $upright)
+    {
         $this->setGeotableId($geotable_id);
         $this->setConsole($console);
         $this->setBounds($bottomleft, $upright);
     }
 
-    public function setBounds($bl, $ur) {
-        $this->cmpLocation($bl, $ur);     
+    /**
+     * @param $bl
+     * @param $ur
+     */
+    public function setBounds($bl, $ur)
+    {
+        $this->cmpLocation($bl, $ur);
         $this->bounds_ = $bl . ';' . $ur;
-    } 
+    }
 
-    private function checkLocation($loc) {
+    /**
+     * @param $loc
+     */
+    private function checkLocation($loc)
+    {
         $tmp = explode(',', $loc);
-        if (count($tmp) != 2) 
-        {
+        if (count($tmp) != 2) {
             trigger_error('参数必须是逗号分隔的经纬度信息', E_USER_ERROR);
         }
 
-        if (!is_numeric($tmp[0]) || !is_numeric($tmp[1]))
-        {
+        if (!is_numeric($tmp[0]) || !is_numeric($tmp[1])) {
             trigger_error('经度或者纬度必须是数字类型', E_USER_ERROR);
         }
     }
 
-    private function cmpLocation($l, $r) 
+    /**
+     * @param $l
+     * @param $r
+     */
+    private function cmpLocation($l, $r)
     {
         $this->checkLocation($l);
         $this->checkLocation($r);
 
         $ltmp = explode(',', $l);
         $rtmp = explode(',', $r);
-        if (doubleval($ltmp[0]) < doubleval($rtmp[0]) 
-                && doubleval($ltmp[1]) < doubleval($rtmp[1]))
-        {
-            return ;
+        if (doubleval($ltmp[0]) < doubleval($rtmp[0])
+            && doubleval($ltmp[1]) < doubleval($rtmp[1])
+        ) {
+            return;
         }
 
         trigger_error('参数必须是图区的左下角和右上角');
     }
 
-    protected function prepareNeedParams() {
+    /**
+     *
+     */
+    protected function prepareNeedParams()
+    {
         $this->params_['bounds'] = $this->bounds_;
     }
-
-    protected $bounds_;
-    protected $url_ = '/geosearch/v2/bound';
 }
-
-
-
-/* vim: set expandtab ts=4 sw=4 sts=4 tw=100: */
-?>

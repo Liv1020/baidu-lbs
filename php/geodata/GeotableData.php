@@ -10,7 +10,7 @@ use liv\lbs\phplib\console\Console;
  * @method array update($id, $name, $geotype, $is_published)
  * @method array delete($id)
  * @method array detail($id)
- * @method array list($name)
+ * @method array list($name = null)
  */
 class GeotableData extends BasicData
 {
@@ -117,11 +117,11 @@ class GeotableData extends BasicData
      * 查询表（list geotable）接口
      * http://developer.baidu.com/map/lbs-geodata.htm#.poi.manage2.2
      *
-     * @param mixed $name 可选
+     * @param string|null $name 可选
      * @access public
      * @return void
      */
-    protected function _list($name)
+    protected function _list($name = null)
     {
         $this->params_['name'] = $name;
         $this->setMethod("GET");

@@ -1,17 +1,22 @@
 <?php
 /***************************************************************************
- * BSD License 
+ * BSD License
  * license : http://opensource.org/licenses/bsd-license.php
  **************************************************************************/
- 
- 
- 
+require '../vendor/autoload.php';
+
+use liv\lbs\geodata\ColumnData;
+use liv\lbs\geodata\GeotableData;
+use liv\lbs\geodata\PoiData;
+use liv\lbs\phplib\Console;
+
+
 /**
  * @file test.php
  * @author fengzi(wfwq2008@gmail.com)
  * @date 2013/08/21 16:06:33
- * @brief 
- *  
+ * @brief
+ *
  **/
 
 require_once('./phplib/console/Console.php');
@@ -21,7 +26,8 @@ require_once('./geodata/PoiData.php');
 
 
 /*---------- Test Geotable ----------*/
-function test_geotable(Console $console){
+function test_geotable(Console $console)
+{
     $geotable = new GeotableData($console);
     $ret = $geotable->create("test01", 1, 1);
     $id = $ret["id"];
@@ -41,7 +47,8 @@ function test_geotable(Console $console){
 }
 
 /*---------- Test Column ----------*/
-function test_column(Console $console, $geotable_id){
+function test_column(Console $console, $geotable_id)
+{
     $column = new ColumnData($console, $geotable_id);
     $ret = $column->create("test-01", "field01", 1, 1, 0);
     var_dump($ret);
@@ -51,7 +58,7 @@ function test_column(Console $console, $geotable_id){
     var_dump($ret);
     $ret = $column->list("test-01");
     //var_dump($ret);
-   
+
     $ret = $column->detail($id);
     var_dump($ret);
 
@@ -63,17 +70,17 @@ function test_column(Console $console, $geotable_id){
 function test_poi(Console $console, $geotable_id)
 {
     $column = new PoiData($console, $geotable_id);
-    $ret = $column->create("test-01", "address", "tags tags", 40, 116 , 1);
+    $ret = $column->create("test-01", "address", "tags tags", 40, 116, 1);
     var_dump($ret);
     $id = $ret["id"];
 
-    $ret = $column->list(array("title"=>"test-01"));
+    $ret = $column->list(array("title" => "test-01"));
     var_dump($ret);
 
-    $ret = $column->update($id, array("title"=>"test-02"));
+    $ret = $column->update($id, array("title" => "test-02"));
     var_dump($ret);
-   
-    
+
+
     $ret = $column->detail($id);
     var_dump($ret);
 
@@ -88,6 +95,3 @@ $console->setServerAK('4b905df3330121f4382299f18cfc2462', '9E050DAfce0ca5861a01b
 test_geotable($console);
 //test_column($console, $geotable_id);
 //test_poi($console, $geotable_id);
-
-/* vim: set expandtab ts=4 sw=4 sts=4 tw=100: */
-?>

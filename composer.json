@@ -12,5 +12,9 @@
     ],
     "autoload": {
         "psr-4": {"liv\\lbs\\": "php/"}
-    }
+    },
+    "repositories": [
+        {"type": "composer", "url": "http://packagist.phpcomposer.com"},
+        {"packagist": false}
+    ]
 }

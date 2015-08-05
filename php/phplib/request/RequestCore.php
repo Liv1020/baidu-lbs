@@ -1,13 +1,10 @@
 <?php
+
+namespace liv\lbs\phplib;
+
 /**
- * Handles all HTTP requests using cURL and manages the responses.
- *
- * @version 2012.01.17
- * @copyright 2006-2011 Ryan Parman
- * @copyright 2006-2010 Foleeo Inc.
- * @copyright 2010-2011 Amazon.com, Inc. or its affiliates.
- * @copyright 2008-2011 Contributors
- * @license http://opensource.org/licenses/bsd-license.php Simplified BSD License
+ * Class RequestCore
+ * @package liv\lbs\phplib
  */
 class RequestCore
 {
@@ -210,7 +207,6 @@ class RequestCore
      * @param string $url (Optional) The URL to request or service endpoint to query.
      * @param string $proxy (Optional) The faux-url to use for proxy settings. Takes the following format: `proxy://user:pass@hostname:port`
      * @param array $helpers (Optional) An associative array of classnames to use for request, and response functionality. Gets passed in automatically by the calling class.
-     * @return $this A reference to the current instance.
      */
     public function __construct($url = null, $proxy = null, $helpers = null)
     {
@@ -559,6 +555,7 @@ class RequestCore
      * @param resource $file_handle (Required) The open file handle resource.
      * @param integer $length (Required) The maximum number of bytes to read.
      * @return binary Binary data from a stream.
+     * @throws RequestCore_Exception
      */
     public function streaming_read_callback($curl_handle, $file_handle, $length)
     {
@@ -596,7 +593,7 @@ class RequestCore
      * A callback function that is invoked by cURL for streaming down.
      *
      * @param resource $curl_handle (Required) The cURL handle for the request.
-     * @param binary $data (Required) The data to write.
+     * @param string $data (Required) The data to write.
      * @return integer The number of bytes written.
      */
     public function streaming_write_callback($curl_handle, $data)
@@ -629,8 +626,8 @@ class RequestCore
     /**
      * Prepares and adds the details of the cURL request. This can be passed along to a <php:curl_multi_exec()>
      * function.
-     *
      * @return resource The handle for the cURL object.
+     * @throws RequestCore_Exception
      */
     public function prep_request()
     {
@@ -852,6 +849,8 @@ class RequestCore
      *
      * @param boolean $parse (Optional) Whether to parse the response with ResponseCore or not.
      * @return string The resulting unparsed data from the request.
+     * @throws RequestCore_Exception
+     * @throws cURL_Exception
      */
     public function send_request($parse = false)
     {
@@ -888,6 +887,7 @@ class RequestCore
      *  <li><code>callback</code> - <code>string|array</code> - Optional - The string name of a function to pass the response data to. If this is a method, pass an array where the <code>[0]</code> index is the class and the <code>[1]</code> index is the method name.</li>
      *  <li><code>limit</code> - <code>integer</code> - Optional - The number of simultaneous requests to make. This can be useful for scaling around slow server responses. Defaults to trusting cURLs judgement as to how many to use.</li></ul>
      * @return array Post-processed cURL responses.
+     * @throws cURL_Multi_Exception
      */
     public function send_multi_request($handles, $opt = null)
     {
@@ -1042,7 +1042,6 @@ class ResponseCore
      * @param array $header (Required) Associative array of HTTP headers (typically returned by <RequestCore::get_response_header()>).
      * @param string $body (Required) XML-formatted response from AWS.
      * @param integer $status (Optional) HTTP response status code from the request.
-     * @return object Contains an <php:array> `header` property (HTTP headers as an associative array), a <php:SimpleXMLElement> or <php:string> `body` property, and an <php:integer> `status` code.
      */
     public function __construct($header, $body, $status = null)
     {
@@ -1070,6 +1069,6 @@ class ResponseCore
     }
 }
 
-class cURL_Exception extends Exception {}
+class cURL_Exception extends \Exception {}
 class cURL_Multi_Exception extends cURL_Exception {}
-class RequestCore_Exception extends Exception {}
+class RequestCore_Exception extends \Exception {}

@@ -1,22 +1,83 @@
 <?php
-/***************************************************************************
- * BSD License 
- * license: http://opensource.org/licenses/bsd-license.php
- **************************************************************************/
- 
+
+namespace liv\lbs\geodata;
+
+use liv\lbs\phplib\Console;
+use liv\lbs\phplib\RequestCore;
+use liv\lbs\phplib\ResponseCore;
+
+
 /**
- * @file BasicSearch.php
- * @author wangjild(wangjild@gmail.com)
+ * LBS云检索基类
+ * @package liv\lbs\geodata
  * @date 2013/08/21 12:32:28
- * @brief LBS云检索基类 
- *  
- **/
-
-require_once YUN_LIB_PATH . '/console/Console.php';
-require_once YUN_LIB_PATH . '/request/RequestCore.php';
-
+ * @brief LBS云检索基类
+ */
 abstract class BasicData{
 
+    /**
+     * @var null
+     */
+    protected $geotable_id_ = null;
+
+
+    /**
+     * @var null
+     */
+    protected $callback_ = null;
+
+    /**
+     * @var array
+     */
+    protected $params_ = array();
+
+    /**
+     * @var RequestCore
+     */
+    protected $request_ = null;
+
+    /**
+     * @var Console
+     */
+    protected $console_ = null;
+
+    /**
+     * @var null
+     */
+    protected $action_ = null;
+
+    /**
+     * @var string
+     */
+    protected $method_ = 'POST';
+
+    /**
+     * @var string
+     */
+    protected $schema_ = 'http';
+
+    /**
+     * @var string
+     */
+    protected $domain_ = 'api.map.baidu.com';
+
+    /**
+     * @var string
+     */
+    protected $url_ = '';
+
+    /**
+     *
+     */
+    const ASCEND = 1;
+    /**
+     *
+     */
+    const DESCEND = -1;
+
+    /**
+     * @return bool|mixed
+     */
     public function request() {
         $this->setMethod();
         $this->prepareNeedParams();
@@ -24,7 +85,7 @@ abstract class BasicData{
 
         $this->request_->send_request();
 
-        $response = new ResponseCore($this->request_->get_response_header(), 
+        $response = new ResponseCore($this->request_->get_response_header(),
                 $this->request_->get_response_body(), $this->request_->get_response_code());
         if (!$response->isOK()) {
             return false;
@@ -33,9 +94,15 @@ abstract class BasicData{
         return json_decode($response->body, true);
     }
 
+    /**
+     * @return mixed
+     */
     abstract protected function prepareNeedParams();
 
 
+    /**
+     * @param Console $console
+     */
     public function setConsole(Console $console) {
         if (! $console instanceOf Console) {
             trigger_error('instance MUST BE Console Class Type', E_USER_ERROR);
@@ -44,6 +111,9 @@ abstract class BasicData{
         $this->console_ = $console;
     }
 
+    /**
+     *
+     */
     protected function prepareCommonParams() {
         if ($this->console_ === null) {
             trigger_error('Console Object Must Be Set', E_USER_ERROR); 
@@ -90,7 +160,10 @@ abstract class BasicData{
             $this->request_->set_body($content);
         }
     }
-        
+
+    /**
+     *
+     */
     protected function setMethod(){
         $actions = array(
             "create"    => "POST",
@@ -102,33 +175,11 @@ abstract class BasicData{
         );
         $this->method_ = isset($actions[$this->action_])?$actions[$this->action_]:"GET";
     }
+
+    /**
+     * @param $action
+     */
     protected function setAction($action){
         $this->action_ = $action;
     }
-    protected $geotable_id_ = null; 
-    
-
-    protected $callback_ = null;
-
-    protected $params_ = array();
-
-    protected $request_ = null;
-
-    protected $console_ = null;
-
-    protected $action_ = null;
-
-    protected $method_ = 'POST';
-
-    protected $schema_ = 'http';
-
-    protected $domain_ = 'api.map.baidu.com';
-
-    protected $url_ = '';
-
-    const ASCEND = 1;
-    const DESCEND = -1;
 }
-
-/* vim: set expandtab ts=4 sw=4 sts=4 tw=100: */
-?>

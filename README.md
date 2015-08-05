@@ -13,36 +13,65 @@ Baidu LBS云 SDK 提供了一个基于PHP/Java语言的，封装了百度[LBS云
     composer require liv/baidu-lbs
     
 2. [使用方法](#使用方法)
+    2.1 [存储]
+    
+        ```php
+        
+        $console = new Console();
+        $console->setServerAK('KbMeaL3jz0ds1lbG11g3Esys', 'myGUcGyxhZvVOtINr8wrvkbGIxTb9CSG');
+        $geoTableId = '116200';
+        
+        $search = new NearbySearch($geoTableId, $console, '120.734879,31.288689', 100);
+        $nearby = $search->search();
+        var_dump($nearby);
+        
+        $search = new LocalSearch($geoTableId, $console, 1);
+        $search->setSortBy('ClickCount', BasicSearch::DESCEND);
+        $search->addFilter('ClickCount', 1, 100);
+        $search->addTags('华北');
+        $local = $search->search();
+        
+        var_dump($local);
+        
+        $search = new BoundSearch($geoTableId, $console, '116.383801,39.90112', '116.412475,39.916451');
+        $bound = $search->search();
+        
+        $search = new DetailSearch($geoTableId, $console, 18460245);
+        $detail = $search->search();
+        
+        var_dump($detail);
+        
+        ```
 
     2.1 [检索](#检索)
 
-    ```php
-    
-    $console = new Console();
-    $console->setServerAK('KbMeaL3jz0ds1lbG11g3Esys', 'myGUcGyxhZvVOtINr8wrvkbGIxTb9CSG');
-    $geoTableId = '116200';
-    
-    $search = new NearbySearch($geoTableId, $console, '120.734879,31.288689', 100);
-    $nearby = $search->search();
-    var_dump($nearby);
-    
-    $search = new LocalSearch($geoTableId, $console, 1);
-    $search->setSortBy('ClickCount', BasicSearch::DESCEND);
-    $search->addFilter('ClickCount', 1, 100);
-    $search->addTags('华北');
-    $local = $search->search();
-    
-    var_dump($local);
-    
-    $search = new BoundSearch($geoTableId, $console, '116.383801,39.90112', '116.412475,39.916451');
-    $bound = $search->search();
-    
-    $search = new DetailSearch($geoTableId, $console, 18460245);
-    $detail = $search->search();
-    
-    var_dump($detail);
-    
-    ```php
+        ```php
+        
+        $console = new Console();
+        $console->setServerAK('KbMeaL3jz0ds1lbG11g3Esys', 'myGUcGyxhZvVOtINr8wrvkbGIxTb9CSG');
+        $geoTableId = '116200';
+        
+        $search = new NearbySearch($geoTableId, $console, '120.734879,31.288689', 100);
+        $nearby = $search->search();
+        var_dump($nearby);
+        
+        $search = new LocalSearch($geoTableId, $console, 1);
+        $search->setSortBy('ClickCount', BasicSearch::DESCEND);
+        $search->addFilter('ClickCount', 1, 100);
+        $search->addTags('华北');
+        $local = $search->search();
+        
+        var_dump($local);
+        
+        $search = new BoundSearch($geoTableId, $console, '116.383801,39.90112', '116.412475,39.916451');
+        $bound = $search->search();
+        
+        $search = new DetailSearch($geoTableId, $console, 18460245);
+        $detail = $search->search();
+        
+        var_dump($detail);
+        
+        ```
 
 
 -------------

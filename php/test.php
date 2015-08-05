@@ -1,17 +1,23 @@
 <?php
 
 use liv\lbs\phplib\console\Console;
+use liv\lbs\search\BasicSearch;
+use liv\lbs\search\BoundSearch;
+use liv\lbs\search\DetailSearch;
+use liv\lbs\search\LocalSearch;
+use liv\lbs\search\NearbySearch;
 
 require '../vendor/autoload.php';
 
 $console = new Console();
-$console->setServerAK('4b905df3330121f4382299f18cfc2462', '9E050DAfce0ca5861a01bda20bc8c234');
+$console->setServerAK('KbMeaL3jz0ds1lbG11g3Esys', 'myGUcGyxhZvVOtINr8wrvkbGIxTb9CSG');
+$geoTableId = '116200';
 
-$search = new NearbySearch(31958, $console, '120.734879,31.288689', 100);
+$search = new NearbySearch($geoTableId, $console, '120.734879,31.288689', 100);
 $nearby = $search->search();
 var_dump($nearby);
 
-$search = new LocalSearch(31958, $console, 1);
+$search = new LocalSearch($geoTableId, $console, 1);
 $search->setSortBy('ClickCount', BasicSearch::DESCEND);
 $search->addFilter('ClickCount', 1, 100);
 $search->addTags('华北');
@@ -19,12 +25,10 @@ $local = $search->search();
 
 var_dump($local);
 
-$search = new BoundSearch(31958, $console, '116.383801,39.90112', '116.412475,39.916451');
+$search = new BoundSearch($geoTableId, $console, '116.383801,39.90112', '116.412475,39.916451');
 $bound = $search->search();
 
-$search = new DetailSearch(31958, $console, 18460245);
+$search = new DetailSearch($geoTableId, $console, 18460245);
 $detail = $search->search();
 
 var_dump($detail);
-/* vim: set expandtab ts=4 sw=4 sts=4 tw=100: */
-?>

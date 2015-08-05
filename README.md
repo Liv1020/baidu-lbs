@@ -2,9 +2,13 @@ Baidu LBS云 SDK
 ==================
 
 Baidu LBS云 SDK 提供了一个基于PHP/Java语言的，封装了百度[LBS云](http://lbsyun.baidu.com)各个服务SDK。
-该SDK以[BSD License](http://opensource.org/licenses/bsd-license.php)发布
 
 感谢：[wangjild](https://github.com/wangjild/lbsyunsdk-baidu)
+
+更新：1、使用composer
+     2、添加命名空间
+     3、优化注释
+     4、优化部分代码逻辑
 
 ## 目录
 -----------------

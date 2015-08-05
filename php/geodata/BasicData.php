@@ -2,9 +2,9 @@
 
 namespace liv\lbs\geodata;
 
-use liv\lbs\phplib\Console;
-use liv\lbs\phplib\RequestCore;
-use liv\lbs\phplib\ResponseCore;
+use liv\lbs\phplib\console\Console;
+use liv\lbs\phplib\request\RequestCore;
+use liv\lbs\phplib\request\ResponseCore;
 
 
 /**

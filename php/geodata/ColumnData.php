@@ -2,18 +2,23 @@
 namespace liv\lbs\geodata;
 
 
-use liv\lbs\phplib\Console;
+use liv\lbs\phplib\console\Console;
 
 /**
  * Class ColumnData
  * @package liv\lbs\geodata
+ * @method array create($name, $key, $type, $is_sortfilter_field, $is_search_field, $options = array())
+ * @method array update($id, $name, $options = array())
+ * @method array delete($id)
+ * @method array detail($id)
+ * @method array list($name = null, $key = null)
  */
 class ColumnData extends BasicData
 {
     /**
      * @var string
      */
-    protected $url_ = '/geodata/v2/column/';
+    protected $url_ = '/geodata/v3/column/';
 
     /**
      * @param Console $console

@@ -1,6 +1,6 @@
 <?php
 
-namespace liv\lbs\phplib;
+namespace liv\lbs\phplib\console;
 
 /**
  * Class Console

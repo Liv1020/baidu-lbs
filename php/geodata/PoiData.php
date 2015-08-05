@@ -1,18 +1,23 @@
 <?php
 namespace liv\lbs\geodata;
 
-use liv\lbs\phplib\Console;
+use liv\lbs\phplib\console\Console;
 
 /**
  * Class PoiData
  * @package liv\lbs\geodata
+ * @method array create($title, $address, $tags, $latitude, $longitude, $coord_type, $options = array())
+ * @method array update($id, $options = array())
+ * @method array delete($id)
+ * @method array detail($id)
+ * @method array list($options = array())
  */
 class PoiData extends BasicData
 {
     /**
      * @var string
      */
-    protected $url_ = '/geodata/v2/poi/';
+    protected $url_ = '/geodata/v3/poi/';
 
     /**
      * @param Console $console
@@ -48,14 +53,18 @@ class PoiData extends BasicData
     /**
      * create
      *
-     * @param $title    poi名称 string(256) 可选 。
-     * @param address  地址    string(256) 可选 。
-     * @param tags tags    string(256) 可选 。
-     * @param latitude 用户上传的纬度  double  必选 。
-     * @param longitude    用户上传的经度  double  必选 。
-     * @param coord_type   用户上传的坐标的类型    uint32  1：未加密的GPS坐标 2：国测局加密 3：百度加密 必选
+     * @param string $title    poi名称 string(256) 可选 。
+     * @param string $address 地址
+     * @param string $tags    string(256) 可选 。
+     * @param float $latitude 用户上传的纬度
+     * @param float $longitude 用户上传的经度
+     * @param string $coord_type 用户上传的坐标的类型
+     * @param array $options
+     * @internal param 地址 $address string(256) 可选 。
+     * @internal param 用户上传的纬度 $latitude double  必选 。
+     * @internal param 用户上传的经度 $longitude double  必选 。
+     * @internal param 用户上传的坐标的类型 $coord_type uint32  1：未加密的GPS坐标 2：国测局加密 3：百度加密 必选
      * @access public
-     * @return void
      */
     protected function _create($title, $address, $tags, $latitude, $longitude, $coord_type, $options = array())
     {
@@ -118,11 +127,11 @@ class PoiData extends BasicData
      * 查询表（list geotable）接口
      * http://developer.baidu.com/map/lbs-geodata.htm#.poi.manage2.2
      *
-     * @param mixed $title 可选
-     * @param mixed $tags 可选
-     * @param mixed $格式x1 ,y1;x2,y2分别代表矩形的左上角和右下角 可选
+     * @param array $options
+     * @internal param mixed $title 可选
+     * @internal param mixed $tags 可选
+     * @internal param mixed $格式x1 ,y1;x2,y2分别代表矩形的左上角和右下角 可选
      * @access public
-     * @return void
      */
     protected function _list($options = array())
     {

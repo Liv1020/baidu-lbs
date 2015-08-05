@@ -1,0 +1,16 @@
+{
+    "name": "liv/baidu-lbs",
+    "description": "百度LBS的PHP library",
+    "require": {
+        "php": "^5.4"
+    },
+    "authors": [
+        {
+            "name": "liv",
+            "email": "523260513@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"liv\\lbs\\": "php/"}
+    }
+}
